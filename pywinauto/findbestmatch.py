@@ -278,6 +278,10 @@ def get_control_names(control, allcontrols):
     # Add the control based on it's friendly class name
     names.append(control.FriendlyClassName())
 
+    # Add the .NET name, if possible
+    if not control.DotNetName() is None:
+        names.append(control.DotNetName())
+
     # if it has some character text then add it base on that
     # and based on that with friendly class name appended
     cleaned = control.WindowText()

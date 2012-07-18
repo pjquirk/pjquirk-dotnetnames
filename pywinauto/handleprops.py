@@ -33,6 +33,7 @@ import win32defines
 import win32structures
 
 import findwindows # for children
+from remotememoryblock import _RemoteMemoryBlock
 
 
 #=========================================================================
@@ -62,6 +63,30 @@ def text(handle):
 
         if ret:
             textval = buffer_.value
+
+    return textval
+
+#=========================================================================
+def dotnetname(handle):
+    "Return the .NET name of the control"
+
+    textval = ''
+
+    wm_gcn = win32functions.RegisterWindowMessage('WM_GETCONTROLNAME')
+    if wm_gcn > 0:
+        length = 1000
+
+        remote_mem = _RemoteMemoryBlock(handle, size=length)
+
+        ret = win32functions.SendMessage(
+            handle, wm_gcn, length, remote_mem)
+
+        if ret:
+            text = ctypes.create_unicode_buffer(length)
+            remote_mem.Read(text)
+            textval = text.value
+
+        del remote_mem
 
     return textval
 

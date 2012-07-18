@@ -148,6 +148,7 @@ class HwndWrapper(object):
     __metaclass__ = _MetaWrapper
 
     friendlyclassname = None
+    dotnetname = None
     windowclasses = []
     handle = None
     can_be_label = False
@@ -212,6 +213,7 @@ class HwndWrapper(object):
         self.writable_props = [
             'Class',
             'FriendlyClassName',
+            'DotNetName',
             'Texts',
             'Style',
             'ExStyle',
@@ -296,6 +298,16 @@ class HwndWrapper(object):
         ID's.
         """
         return handleprops.controlid(self)
+
+    #-----------------------------------------------------------
+    def DotNetName(self):
+        """Return the .NET name of the control
+
+        Return value is a string.
+        """
+        if self.dotnetname is None:
+            self.dotnetname = handleprops.dotnetname(self)
+        return self.dotnetname
 
     #-----------------------------------------------------------
     def UserData(self):
